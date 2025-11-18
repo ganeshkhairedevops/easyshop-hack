@@ -5,7 +5,7 @@ metadata:
 spec:
   storageClassName: standarad
   capacity:
-    storage: 2Gi
+    storage: 5Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
