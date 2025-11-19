@@ -47,7 +47,7 @@ sudo mv kubectl /usr/local/bin/
 
 ### Create cluster
 ```bash
-kind create cluster --name easyshop --config kubernetes/00-kind-config.yaml
+kind create cluster --name easyshop --config k8s/00-kind-config.yaml
 ```
 
 ---
