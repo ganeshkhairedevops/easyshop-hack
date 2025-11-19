@@ -1,3 +1,4 @@
+
 # **EasyShop – Kubernetes Deployment Guide (Kind + Docker + MongoDB + Ingress + HPA)**
 
 EasyShop is a full-stack e-commerce application deployed using Docker, Kubernetes, MongoDB, migration jobs, autoscaling (HPA), and NGINX Ingress.  
@@ -15,6 +16,10 @@ This guide documents the complete DevOps workflow to build, containerize, deploy
 >    curl -fsSL https://get.docker.com -o get-docker.sh
 >    sudo sh get-docker.sh
 >    rm get-docker.sh
+###
+### Allow your user to run Docker commands without needing sudo and add current user in docker group
+>   ```bash
+>    sduo usermod -aG docker $USER && newgrp docker
 ### Build & push application image
 ```bash
 docker build -t <dockerhub-username>/easyshop:latest .
@@ -64,6 +69,34 @@ kubectl apply -f k8s/01-namespace.yaml
 kubectl apply -f k8s/02-mongodb-pv.yaml
 kubectl apply -f k8s/03-mongodb-pvc.yaml
 ```
+### Environment Setup
+Create `k8s/04-configmap.yaml` with the following content:
+>   ```yaml
+>   apiVersion: v1
+>   kind: ConfigMap
+>   metadata:
+>     name: easyshop-config
+>     namespace: easyshop
+>   data:
+>     MONGODB_URI: "mongodb://mongodb-service:27017/easyshop"
+>     NODE_ENV: "production"
+>     NEXT_PUBLIC_API_URL: "http://YOUR_EC2_PUBLIC_IP/api"  # Replace with your YOUR_EC2_PUBLIC_IP
+>     NEXTAUTH_URL: "http://YOUR_EC2_PUBLIC_IP"             # Replace with your YOUR_EC2_PUBLIC_IP
+>     NEXTAUTH_SECRET: "HmaFjYZ2jbUK7Ef+wZrBiJei4ZNGBAJ5IdiOGAyQegw="
+>     JWT_SECRET: "e5e425764a34a2117ec2028bd53d6f1388e7b90aeae9fa7735f2469ea3a6cc8c"
+
+ [!IMPORTANT]
+> When deploying to EC2, make sure to replace `your-ec2-ip` with your actual EC2 instance's public IP address.
+
+To generate secure secret keys, use these commands in your terminal:
+```bash
+# For NEXTAUTH_SECRET
+openssl rand -base64 32
+
+# For JWT_SECRET
+openssl rand -hex 32
+```
+Create `k8s/05-secrets.yaml` Update the NEXTAUTH_SECRET and JWT_SECRET  :
 
 ### ConfigMap & Secrets
 ```bash
@@ -87,12 +120,12 @@ kubectl apply -f k8s/09-easyshop-service.yaml
 
 # 🌐 **4. NGINX Ingress Setup**
 
-### Install ingress controller
+### Install NGINX Ingress Controller  Install NGINX 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
 ```
 
-### Wait for controller
+### Wait for controller to be ready:
 ```bash
 kubectl wait --namespace ingress-nginx   --for=condition=ready pod   --selector=app.kubernetes.io/component=controller   --timeout=90s
 ```
@@ -177,3 +210,4 @@ kind delete cluster --name easyshop
 - HPA Autoscaling  
 - Migration Job  
 - Fully working on Kind  
+
