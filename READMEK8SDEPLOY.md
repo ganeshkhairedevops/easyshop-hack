@@ -139,12 +139,30 @@ kubectl apply -f k8s/10-ingress.yaml
 
 # 📈 **5. Enable Autoscaling (HPA)**
 
-Install metrics-server:
+- Install Metrics Server in Kind Cluster:
 ```bash
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 ```
+- Edit the Metrics Server Deployment
+```bash
+kubectl -n kube-system edit deployment metrics-server
+```
+- Add the security bypass to deployment under `container.args`
+```bash
+- --kubelet-insecure-tls
+- --kubelet-preferred-address-types=InternalIP,Hostname,ExternalIP
+```
+- Restart the deployment
+```bash
+kubectl -n kube-system rollout restart deployment metrics-server
+```
+- Verify if the metrics server is running
+```bash
+kubectl get pods -n kube-system
+kubectl top nodes
+```
 
-Apply HPA:
+## Apply HPA:
 ```bash
 kubectl apply -f k8s/11-hpa.yaml
 ```
