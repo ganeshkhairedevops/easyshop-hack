@@ -193,7 +193,51 @@ http://<your-ip>.nip.io
 Example:  
 ```
 http://51.20.251.235.nip.io
-```
+
+
+> [!WARNING]
+> - http://`<public-ip>`.nip.io
+>
+>  
+> `nip.io` is a free wildcard DNS service that automatically maps any subdomain to the corresponding IP address.
+
+> [!NOTE] 
+> - If you access `http://51.20.251.235.nip.io`, it resolves to `51.20.251.235`.
+> - If you use `app.51.20.251.235.nip.io`, it still resolves to `51.20.251.235`.
+>
+> **Why Use `nip.io`?**  
+> - **Simplifies local and remote testing:** No need to set up custom DNS records.  
+> - **Useful for Kubernetes Ingress:** You can access services using public IP-based domains.  
+> - **Great for temporary or dynamic environments:** Works with CI/CD pipelines, cloud VMs, and local testing.  
+>
+> **Who Provides This Service?**  
+> - `nip.io` is an **open-source project maintained by Vincent Bernat**.  
+> - It is provided **for free**, with no registration required.  
+> - The service works by dynamically resolving any subdomain containing an IP address.
+> 
+> **More details:** [https://nip.io](https://nip.io)
+
+
+
+
+
+
+## Troubleshooting
+1. If pods are not starting, check logs:
+   
+   ```bash
+   kubectl logs -n easyshop <pod-name>
+    ```
+2. For MongoDB connection issues:
+   
+   ```bash
+   kubectl exec -it -n easyshop mongodb-0 -- mongosh
+    ```
+3. To restart deployments:
+   
+   ```bash
+   kubectl rollout restart deployment/easyshop -n easyshop
+    ``````
 
 ---
 
