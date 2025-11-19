@@ -220,8 +220,6 @@ http://51.20.251.235.nip.io
 
 ````
 ```
-
-
 ## Troubleshooting
 1. If pods are not starting, check logs:
    
@@ -237,7 +235,8 @@ http://51.20.251.235.nip.io
    
    ```bash
    kubectl rollout restart deployment/easyshop -n easyshop
-    ``````
+    ```
+
 ```
 ---
 
