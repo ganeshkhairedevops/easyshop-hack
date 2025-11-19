@@ -9,7 +9,7 @@ spec:
     kind: Deployment
     name: easyshop
   minReplicas: 2
-  maxReplicas: 20
+  maxReplicas: 5
   metrics:
     - type: Resource
       resource:
@@ -17,27 +17,3 @@ spec:
         target:
           type: Utilization
           averageUtilization: 70
-# add min max and avg pods running
-  behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 30
-      policies:
-        # Approximation: 70% -> +5 pods
-        - type: Pods
-          value: 5
-          periodSeconds: 60
-        # Approximation: 80% -> +10 pods
-        - type: Pods
-          value: 10
-          periodSeconds: 60
-        # Approximation: 90% -> +15 pods
-        - type: Pods
-          value: 15
-          periodSeconds: 60
-    scaleDown:
-      stabilizationWindowSeconds: 300
-      policies:
-        - type: Percent
-          value: 20
-          periodSeconds: 60
-
