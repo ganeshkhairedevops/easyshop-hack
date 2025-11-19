@@ -56,31 +56,31 @@ kind create cluster --name easyshop --config k8s/00-kind-config.yaml
 
 ### Namespace
 ```bash
-kubectl apply -f kubernetes/01-namespace.yaml
+kubectl apply -f k8s/01-namespace.yaml
 ```
 
 ### Storage (PV & PVC)
 ```bash
-kubectl apply -f kubernetes/02-mongodb-pv.yaml
-kubectl apply -f kubernetes/03-mongodb-pvc.yaml
+kubectl apply -f k8s/02-mongodb-pv.yaml
+kubectl apply -f k8s/03-mongodb-pvc.yaml
 ```
 
 ### ConfigMap & Secrets
 ```bash
-kubectl apply -f kubernetes/04-configmap.yaml
-kubectl apply -f kubernetes/05-secrets.yaml
+kubectl apply -f k8s/04-configmap.yaml
+kubectl apply -f k8s/05-secrets.yaml
 ```
 
 ### Deploy MongoDB
 ```bash
-kubectl apply -f kubernetes/06-mongodb-service.yaml
-kubectl apply -f kubernetes/07-mongodb-statefulset.yaml
+kubectl apply -f k8s/06-mongodb-service.yaml
+kubectl apply -f k8s/07-mongodb-statefulset.yaml
 ```
 
 ### Deploy EasyShop App
 ```bash
-kubectl apply -f kubernetes/08-easyshop-deployment.yaml
-kubectl apply -f kubernetes/09-easyshop-service.yaml
+kubectl apply -f k8s/08-easyshop-deployment.yaml
+kubectl apply -f k8s/09-easyshop-service.yaml
 ```
 
 ---
@@ -99,7 +99,7 @@ kubectl wait --namespace ingress-nginx   --for=condition=ready pod   --selector=
 
 ### Apply Ingress
 ```bash
-kubectl apply -f kubernetes/10-ingress.yaml
+kubectl apply -f k8s/10-ingress.yaml
 ```
 
 ---
@@ -113,7 +113,7 @@ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/late
 
 Apply HPA:
 ```bash
-kubectl apply -f kubernetes/11-hpa.yaml
+kubectl apply -f k8s/11-hpa.yaml
 ```
 
 ---
@@ -121,7 +121,7 @@ kubectl apply -f kubernetes/11-hpa.yaml
 # 🗄️ **6. Run Database Migration Job**
 
 ```bash
-kubectl apply -f kubernetes/12-migration-job.yaml
+kubectl apply -f k8s/12-migration-job.yaml
 ```
 
 Check job:
